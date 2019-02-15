@@ -1,0 +1,13 @@
+# Emacs backup files
+*~
+*#
+.#*
+# Vim file artifacts
+.*.sw*
+# installed platform-specific binaries
+/bin
+/config
+*/channel-artifacts
+*/crypto-config
+.DS_Store
+.project

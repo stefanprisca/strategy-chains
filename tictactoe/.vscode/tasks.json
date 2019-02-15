@@ -1,0 +1,14 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "generate",
+            "type": "shell",
+            "command": "export FABRIC_CFG_PATH=$PWD ; ./byfn.sh generate -c tttchannel",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}
