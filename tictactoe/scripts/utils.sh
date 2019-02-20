@@ -100,7 +100,7 @@ installChaincode() {
   setGlobals $PEER $PLAYER
   VERSION=${3:-1.0}
   set -x
-  peer chaincode install -n mycc -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
+  peer chaincode install -n ${CCNAME} -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
   res=$?
   set +x
   cat log.txt
@@ -120,12 +120,12 @@ instantiateChaincode() {
   # the "-o" option
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer chaincode instantiate -o orderer.tictactoe.com:7050 -C $CHANNEL_NAME -n mycc -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["init","a","100","b","200"]}' -P "AND ('Player1MSP.peer','Player2MSP.peer')" >&log.txt
+    peer chaincode instantiate -o orderer.tictactoe.com:7050 -C $CHANNEL_NAME -n ${CCNAME} -l ${LANGUAGE} -v ${VERSION} -c "${INSTARGS}" -P ${PERMISSION} >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer chaincode instantiate -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -l ${LANGUAGE} -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "AND ('Player1MSP.peer','Player2MSP.peer')" >&log.txt
+    peer chaincode instantiate -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CCNAME} -l ${LANGUAGE} -v 1.0 -c "${INSTARGS}" -P "${PERMISSION}" >&log.txt
     res=$?
     set +x
   fi

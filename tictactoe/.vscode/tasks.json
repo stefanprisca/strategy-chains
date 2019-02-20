@@ -20,7 +20,7 @@
         {
             "label": "ttt_clean",
             "type": "shell",
-            "command": "./byfn.sh -m down -c tttchannel ; docker stop $(docker container ls -aq); docker rm $(docker container ls -aq);",
+            "command": "./byfn.sh -m down -c tttchannel",
             "group": "build",
             "problemMatcher": []
         }
