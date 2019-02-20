@@ -15,7 +15,7 @@ OrdererOrgs:
 
 PeerOrgs:
   # ---------------------------------------------------------------------------
-  # Org1
+  # Player1
   # ---------------------------------------------------------------------------
   - Name: Player1
     Domain: player1.tictactoe.com
@@ -25,7 +25,7 @@ PeerOrgs:
     Users:
       Count: 1
   # ---------------------------------------------------------------------------
-  # Org2: See "Org1" for full specification
+  # Player2: See "Player1" for full specification
   # ---------------------------------------------------------------------------
   - Name: Player2
     Domain: player2.tictactoe.com

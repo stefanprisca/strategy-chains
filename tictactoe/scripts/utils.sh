@@ -125,7 +125,7 @@ instantiateChaincode() {
     set +x
   else
     set -x
-    peer chaincode instantiate -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CCNAME} -l ${LANGUAGE} -v 1.0 -c "${INSTARGS}" -P "${PERMISSION}" >&log.txt
+    peer chaincode instantiate -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CCNAME} -l ${LANGUAGE} -v ${VERSION} -c "${INSTARGS}" -P "${PERMISSION}" >&log.txt
     res=$?
     set +x
   fi
@@ -141,7 +141,7 @@ upgradeChaincode() {
   setGlobals $PEER $PLAYER
 
   set -x
-  peer chaincode upgrade -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "AND ('Player1MSP.peer','Player2MSP.peer','Org3MSP.peer')"
+  peer chaincode upgrade -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CCNAME -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "AND ('Player1MSP.peer','Player2MSP.peer','Org3MSP.peer')"
   res=$?
   set +x
   cat log.txt
@@ -150,45 +150,45 @@ upgradeChaincode() {
   echo
 }
 
-# chaincodeQuery() {
-#   PEER=$1
-#   PLAYER=$2
-#   setGlobals $PEER $PLAYER
-#   EXPECTED_RESULT=$3
-#   echo "===================== Querying on peer${PEER}.player${PLAYER} on channel '$CHANNEL_NAME'... ===================== "
-#   local rc=1
-#   local starttime=$(date +%s)
+chaincodeQuery() {
+  PEER=$1
+  PLAYER=$2
+  setGlobals $PEER $PLAYER
+  EXPECTED_RESULT=$3
+  echo "===================== Querying on peer${PEER}.player${PLAYER} on channel '$CHANNEL_NAME'... ===================== "
+  local rc=1
+  local starttime=$(date +%s)
 
-#   # continue to poll
-#   # we either get a successful response, or reach TIMEOUT
-#   while
-#     test "$(($(date +%s) - starttime))" -lt "$TIMEOUT" -a $rc -ne 0
-#   do
-#     sleep $DELAY
-#     echo "Attempting to Query peer${PEER}.player${PLAYER} ...$(($(date +%s) - starttime)) secs"
-#     set -x
-#     peer chaincode query -C $CHANNEL_NAME -n mycc -c '{"Args":["query","a"]}' >&log.txt
-#     res=$?
-#     set +x
-#     test $res -eq 0 && VALUE=$(cat log.txt | awk '/Query Result/ {print $NF}')
-#     test "$VALUE" = "$EXPECTED_RESULT" && let rc=0
-#     # removed the string "Query Result" from peer chaincode query command
-#     # result. as a result, have to support both options until the change
-#     # is merged.
-#     test $rc -ne 0 && VALUE=$(cat log.txt | egrep '^[0-9]+$')
-#     test "$VALUE" = "$EXPECTED_RESULT" && let rc=0
-#   done
-#   echo
-#   cat log.txt
-#   if test $rc -eq 0; then
-#     echo "===================== Query successful on peer${PEER}.player${PLAYER} on channel '$CHANNEL_NAME' ===================== "
-#   else
-#     echo "!!!!!!!!!!!!!!! Query result on peer${PEER}.player${PLAYER} is INVALID !!!!!!!!!!!!!!!!"
-#     echo "================== ERROR !!! FAILED to execute End-2-End Scenario =================="
-#     echo
-#     exit 1
-#   fi
-# }
+  # continue to poll
+  # we either get a successful response, or reach TIMEOUT
+  while
+    test "$(($(date +%s) - starttime))" -lt "$TIMEOUT" -a $rc -ne 0
+  do
+    sleep $DELAY
+    echo "Attempting to Query peer${PEER}.player${PLAYER} ...$(($(date +%s) - starttime)) secs"
+    set -x
+    peer chaincode query -C $CHANNEL_NAME -n $CCNAME -c $QARGS >&log.txt
+    res=$?
+    set +x
+    test $res -eq 0 && VALUE=$(cat log.txt | awk '/Query Result/ {print $NF}')
+    test "$VALUE" = "$EXPECTED_RESULT" && let rc=0
+    # removed the string "Query Result" from peer chaincode query command
+    # result. as a result, have to support both options until the change
+    # is merged.
+    test $rc -ne 0 && VALUE=$(cat log.txt | egrep '^[0-9]+$')
+    test "$VALUE" = "$EXPECTED_RESULT" && let rc=0
+  done
+  echo
+  cat log.txt
+  if test $rc -eq 0; then
+    echo "===================== Query successful on peer${PEER}.player${PLAYER} on channel '$CHANNEL_NAME' ===================== "
+  else
+    echo "!!!!!!!!!!!!!!! Query result on peer${PEER}.player${PLAYER} is INVALID !!!!!!!!!!!!!!!!"
+    echo "================== ERROR !!! FAILED to execute End-2-End Scenario =================="
+    echo
+    exit 1
+  fi
+}
 
 # fetchChannelConfig <channel_id> <output_json>
 # Writes the current channel config for a given channel to a JSON file
@@ -275,27 +275,27 @@ parsePeerConnectionParameters() {
 
 # chaincodeInvoke <peer> <player> ...
 # Accepts as many peer/player pairs as desired and requests endorsement from each
-# chaincodeInvoke() {
-#   parsePeerConnectionParameters $@
-#   res=$?
-#   verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and player parameters "
+chaincodeInvoke() {
+  parsePeerConnectionParameters $@
+  res=$?
+  verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and player parameters "
 
-#   # while 'peer chaincode' command can get the orderer endpoint from the
-#   # peer (if join was successful), let's supply it directly as we know
-#   # it using the "-o" option
-#   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
-#     set -x
-#     peer chaincode invoke -o orderer.tictactoe.com:7050 -C $CHANNEL_NAME -n mycc $PEER_CONN_PARMS -c '{"Args":["invoke","a","b","10"]}' >&log.txt
-#     res=$?
-#     set +x
-#   else
-#     set -x
-#     peer chaincode invoke -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc $PEER_CONN_PARMS -c '{"Args":["invoke","a","b","10"]}' >&log.txt
-#     res=$?
-#     set +x
-#   fi
-#   cat log.txt
-#   verifyResult $res "Invoke execution on $PEERS failed "
-#   echo "===================== Invoke transaction successful on $PEERS on channel '$CHANNEL_NAME' ===================== "
-#   echo
-# }
+  # while 'peer chaincode' command can get the orderer endpoint from the
+  # peer (if join was successful), let's supply it directly as we know
+  # it using the "-o" option
+  if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
+    set -x
+    peer chaincode invoke -o orderer.tictactoe.com:7050 -C $CHANNEL_NAME -n $CCNAME $PEER_CONN_PARMS -c $INVOKARGS >&log.txt
+    res=$?
+    set +x
+  else
+    set -x
+    peer chaincode invoke -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CCNAME $PEER_CONN_PARMS -c $INVOKARGS >&log.txt
+    res=$?
+    set +x
+  fi
+  cat log.txt
+  verifyResult $res "Invoke execution on $PEERS failed "
+  echo "===================== Invoke transaction successful on $PEERS on channel '$CHANNEL_NAME' ===================== "
+  echo
+}

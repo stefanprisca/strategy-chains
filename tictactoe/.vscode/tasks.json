@@ -6,21 +6,21 @@
         {
             "label": "ttt_generate",
             "type": "shell",
-            "command": "export FABRIC_CFG_PATH=$PWD ; ./byfn.sh generate -c tttchannel",
+            "command": "export FABRIC_CFG_PATH=$PWD ; ./ttt.sh generate -c tttchannel",
             "group": "build",
             "problemMatcher": []
         },
         {
             "label": "ttt_up",
             "type": "shell",
-            "command": "./byfn.sh up -c tttchannel",
+            "command": "./ttt.sh up -c tttchannel",
             "group": "build",
             "problemMatcher": []
         },
         {
             "label": "ttt_clean",
             "type": "shell",
-            "command": "./byfn.sh -m down -c tttchannel",
+            "command": "./ttt.sh -m down -c tttchannel",
             "group": "build",
             "problemMatcher": []
         }
