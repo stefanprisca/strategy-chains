@@ -34,32 +34,6 @@ upgradeCC(){
     echo "Not yet implemented."
 }
 
-invokeCC(){
-
-    CHANNEL_NAME="$1"
-    posId="$2"
-    mark="$3"
-    player=$4
-
-    INVOKARGS="{\"Args\":[\"move\",\"$posId\",\"$mark\"]}"
-    echo "================== Invoking move: $INVOKARGS, $player, $CHANNEL_NAME ==============="
-
-    chaincodeInvoke 0 $player
-}
-
-queryCC(){
-
-    CHANNEL_NAME="$1"
-    posId="$2"
-    player=$3
-    expectedM=$4
-
-    QARGS="{\"Args\":[\"getPos\",\"$posId\"]}"
-    echo "================== Invoking move: $INVOKARGS ==============="
-
-    chaincodeInvoke 0 $player
-}
-
 if [ "$MODE" == "install" ]; then # install new sc
     installCC $3
 elif [ "$MODE" == "instantiate" ]; then
