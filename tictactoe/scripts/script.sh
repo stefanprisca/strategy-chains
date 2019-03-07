@@ -1,4 +1,8 @@
 #!/bin/bash
+# Copyright 2019 Stefan Prisca
+
+# This script is a copy of the Hyperledger byfn script, with modifications to fit the tic tac toe project.
+# original can be found here: <https://github.com/hyperledger/fabric-samples/blob/release-1.4/first-network/scripts/script.sh>
 
 echo
 echo " ____    _____      _      ____    _____ "
