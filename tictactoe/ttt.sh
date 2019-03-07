@@ -29,7 +29,7 @@
 # prepending $PWD/../bin to PATH to ensure we are picking up the correct binaries
 # this may be commented out to resolve installed version of tools if desired
 export PATH=${PWD}/../bin:${PWD}:$PATH
-export FABRIC_CFG_PATH=${PWD}
+export FABRIC_CFG_PATH=${SCFIXTURES}/ttt
 export VERBOSE=false
 
 # Print the usage message
@@ -151,9 +151,10 @@ function checkPrereqs() {
 function networkUp() {
   checkPrereqs
   # generate artifacts if they don't exist
-  if [ ! -d "crypto-config" ]; then
+  if [ ! -d "${FABRIC_CFG_PATH}/crypto-config" ]; then
+    copyConfigFiles
     generateCerts
-    replacePrivateKey
+    # replacePrivateKey
     generateChannelArtifacts
   fi
   if [ "${IF_COUCHDB}" == "couchdb" ]; then
@@ -275,9 +276,7 @@ function networkDown() {
     #Cleanup images
     removeUnwantedImages
     # remove orderer block and other channel configuration transactions and certs
-    rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/org3.json
-    # remove the docker-compose yaml file that was customized to the example
-    rm -f docker-compose-e2e.yaml
+    rm -rf ${FABRIC_CFG_PATH}/channel-artifacts/*.block ${FABRIC_CFG_PATH}/channel-artifacts/*.tx ${FABRIC_CFG_PATH}/crypto-config
   fi
 }
 
@@ -300,11 +299,11 @@ function replacePrivateKey() {
   # The next steps will replace the template's contents with the
   # actual values of the private key file names for the two CAs.
   CURRENT_DIR=$PWD
-  cd crypto-config/peerOrganizations/player1.tictactoe.com/ca/
+  cd ${TTT_FIXTURES_PATH}/crypto-config/peerOrganizations/player1.tictactoe.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
-  cd crypto-config/peerOrganizations/player2.tictactoe.com/ca/
+  cd ${TTT_FIXTURES_PATH}/crypto-config/peerOrganizations/player2.tictactoe.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
@@ -331,6 +330,12 @@ function replacePrivateKey() {
 #
 # After we run the tool, the certs will be parked in a folder titled ``crypto-config``.
 
+# Copy the configuration files to ${FABRIC_CFG_PATH}
+function copyConfigFiles() {
+  yes | cp -f ./configtx.yaml ${FABRIC_CFG_PATH}
+  yes | cp -f ./crypto-config.yaml ${FABRIC_CFG_PATH}
+}
+
 # Generates Org certs using cryptogen tool
 function generateCerts() {
   which cryptogen
@@ -347,7 +352,7 @@ function generateCerts() {
     rm -Rf crypto-config
   fi
   set -x
-  cryptogen generate --config=./crypto-config.yaml
+  cryptogen generate --config=${FABRIC_CFG_PATH}/crypto-config.yaml --output=${FABRIC_CFG_PATH}/crypto-config
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -356,7 +361,7 @@ function generateCerts() {
   fi
   echo
 }
-org1
+
 # The `configtxgen tool is used to create four artifacts: orderer **bootstrap
 # block**, fabric **channel configuration transaction**, and two **anchor
 # peer transactions** - one for each Peer Org.
@@ -410,9 +415,9 @@ function generateChannelArtifacts() {
   echo "CONSENSUS_TYPE="$CONSENSUS_TYPE
   set -x
   if [ "$CONSENSUS_TYPE" == "solo" ]; then
-    configtxgen -profile TTTOrdererGenesis -channelID ttt-sys-channel -outputBlock ./channel-artifacts/genesis.block
+    configtxgen -profile TTTOrdererGenesis -channelID ttt-sys-channel -outputBlock ${FABRIC_CFG_PATH}/channel-artifacts/genesis.block
   elif [ "$CONSENSUS_TYPE" == "kafka" ]; then
-    configtxgen -profile SampleDevModeKafka -channelID ttt-sys-channel -outputBlock ./channel-artifacts/genesis.block
+    configtxgen -profile SampleDevModeKafka -channelID ttt-sys-channel -outputBlock ${FABRIC_CFG_PATH}/channel-artifacts/genesis.block
   else
     set +x
     echo "unrecognized CONSESUS_TYPE='$CONSENSUS_TYPE'. exiting"
@@ -429,7 +434,7 @@ function generateChannelArtifacts() {
   echo "### Generating channel configuration transaction 'channel.tx' ###"
   echo "#################################################################"
   set -x
-  configtxgen -profile TTTChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+  configtxgen -profile TTTChannel -outputCreateChannelTx ${FABRIC_CFG_PATH}/channel-artifacts/channel.tx -channelID $CHANNEL_NAME
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -442,7 +447,7 @@ function generateChannelArtifacts() {
   echo "#######    Generating anchor peer update for Player1MSP   ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile TTTChannel -outputAnchorPeersUpdate ./channel-artifacts/Player1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Player1MSP
+  configtxgen -profile TTTChannel -outputAnchorPeersUpdate ${FABRIC_CFG_PATH}/channel-artifacts/Player1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Player1MSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -456,7 +461,7 @@ function generateChannelArtifacts() {
   echo "#################################################################"
   set -x
   configtxgen -profile TTTChannel -outputAnchorPeersUpdate \
-    ./channel-artifacts/Player2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Player2MSP
+    ${FABRIC_CFG_PATH}/channel-artifacts/Player2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Player2MSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -567,8 +572,9 @@ if [ "${MODE}" == "up" ]; then
 elif [ "${MODE}" == "down" ]; then ## Clear the network
   networkDown
 elif [ "${MODE}" == "generate" ]; then ## Generate Artifacts
+  copyConfigFiles
   generateCerts
-  replacePrivateKey
+  # replacePrivateKey
   generateChannelArtifacts
 elif [ "${MODE}" == "restart" ]; then ## Restart the network
   networkDown

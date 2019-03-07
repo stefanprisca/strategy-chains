@@ -6,7 +6,7 @@
         {
             "label": "ttt_generate",
             "type": "shell",
-            "command": "export FABRIC_CFG_PATH=$PWD ; ./ttt.sh generate -c tttchannel",
+            "command": "./ttt.sh generate -c tttchannel",
             "group": "build",
             "problemMatcher": []
         },

@@ -22,9 +22,9 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-    - ../crypto-config/ordererOrganizations/tictactoe.com/orderers/orderer.tictactoe.com/msp:/var/hyperledger/orderer/msp
-    - ../crypto-config/ordererOrganizations/tictactoe.com/orderers/orderer.tictactoe.com/tls/:/var/hyperledger/orderer/tls
+    - ${FABRIC_CFG_PATH}/channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ${FABRIC_CFG_PATH}/crypto-config/ordererOrganizations/tictactoe.com/orderers/orderer.tictactoe.com/msp:/var/hyperledger/orderer/msp
+    - ${FABRIC_CFG_PATH}/crypto-config/ordererOrganizations/tictactoe.com/orderers/orderer.tictactoe.com/tls/:/var/hyperledger/orderer/tls
     - orderer.tictactoe.com:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
@@ -42,8 +42,8 @@ services:
       - CORE_PEER_LOCALMSPID=Player1MSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/player1.tictactoe.com/peers/peer0.player1.tictactoe.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/player1.tictactoe.com/peers/peer0.player1.tictactoe.com/tls:/etc/hyperledger/fabric/tls
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tictactoe.com/peers/peer0.player1.tictactoe.com/msp:/etc/hyperledger/fabric/msp
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tictactoe.com/peers/peer0.player1.tictactoe.com/tls:/etc/hyperledger/fabric/tls
         - peer0.player1.tictactoe.com:/var/hyperledger/production
     ports:
       - 7051:7051
@@ -62,8 +62,8 @@ services:
       - CORE_PEER_LOCALMSPID=Player2MSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/player2.tictactoe.com/peers/peer0.player2.tictactoe.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/player2.tictactoe.com/peers/peer0.player2.tictactoe.com/tls:/etc/hyperledger/fabric/tls
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player2.tictactoe.com/peers/peer0.player2.tictactoe.com/msp:/etc/hyperledger/fabric/msp
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player2.tictactoe.com/peers/peer0.player2.tictactoe.com/tls:/etc/hyperledger/fabric/tls
         - peer0.player2.tictactoe.com:/var/hyperledger/production
     ports:
       - 9051:7051
