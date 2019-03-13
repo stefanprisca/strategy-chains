@@ -6,21 +6,21 @@
         {
             "label": "ttt_generate",
             "type": "shell",
-            "command": "./ttt.sh generate -c tttchannel",
+            "command": "yes | ./ttt.sh generate -c tttchannel",
             "group": "build",
             "problemMatcher": []
         },
         {
             "label": "ttt_up",
             "type": "shell",
-            "command": "./ttt.sh up -c tttchannel",
+            "command": "yes | ./ttt.sh up -c tttchannel",
             "group": "build",
             "problemMatcher": []
         },
         {
             "label": "ttt_clean",
             "type": "shell",
-            "command": "./ttt.sh -m down -c tttchannel",
+            "command": "yes | ./ttt.sh -m down -c tttchannel",
             "group": "build",
             "problemMatcher": []
         }

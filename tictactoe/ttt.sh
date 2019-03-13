@@ -132,6 +132,10 @@ function networkUp() {
     # replacePrivateKey
     generateChannelArtifacts
   fi
+
+  #get the ca key names
+  export PLAYER1_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tictactoe.com/ca/ | grep _sk)
+  export PLAYER2_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tictactoe.com/ca/ | grep _sk)
   if [ "${IF_COUCHDB}" == "couchdb" ]; then
     if [ "$CONSENSUS_TYPE" == "kafka" ]; then
       IMAGE_TAG=$IMAGETAG docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_KAFKA -f $COMPOSE_FILE_COUCH up -d 2>&1
@@ -419,24 +423,24 @@ function generateChannelArtifacts() {
 
   echo
   echo "#################################################################"
-  echo "#######    Generating anchor peer update for Player1MSP   ##########"
+  echo "#######    Generating anchor peer update for Player1  ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile TTTChannel -outputAnchorPeersUpdate ${FABRIC_CFG_PATH}/channel-artifacts/Player1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Player1MSP
+  configtxgen -profile TTTChannel -outputAnchorPeersUpdate ${FABRIC_CFG_PATH}/channel-artifacts/Player1anchors.tx -channelID $CHANNEL_NAME -asOrg Player1
   res=$?
   set +x
   if [ $res -ne 0 ]; then
-    echo "Failed to generate anchor peer update for Player1MSP..."
+    echo "Failed to generate anchor peer update for Player1..."
     exit 1
   fi
 
   echo
   echo "#################################################################"
-  echo "#######    Generating anchor peer update for Player2MSP   ##########"
+  echo "#######    Generating anchor peer update for Player2   ##########"
   echo "#################################################################"
   set -x
   configtxgen -profile TTTChannel -outputAnchorPeersUpdate \
-    ${FABRIC_CFG_PATH}/channel-artifacts/Player2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Player2MSP
+    ${FABRIC_CFG_PATH}/channel-artifacts/Player2anchors.tx -channelID $CHANNEL_NAME -asOrg Player2
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -457,7 +461,7 @@ CLI_DELAY=3
 # channel name defaults to "mychannel"
 CHANNEL_NAME="mychannel"
 # use this as the default docker-compose yaml definition
-COMPOSE_FILE=docker-compose-cli.yaml
+COMPOSE_FILE=docker-compose.yaml
 #
 COMPOSE_FILE_COUCH=docker-compose-couch.yaml
 # org3 docker compose file

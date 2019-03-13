@@ -19,7 +19,7 @@ installCC(){
 instantiateCC(){
     LANGUAGE="golang"
 
-    PERMISSION='AND ("Player1MSP.peer","Player2MSP.peer")'
+    PERMISSION=''
     INSTARGS='{"Args":["init"]}'
     
     CHANNEL_NAME="$1"
@@ -28,6 +28,19 @@ instantiateCC(){
 
     instantiateChaincode 0 1
     instantiateChaincode 0 2
+}
+
+invokeCC(){
+
+    CHANNEL_NAME="$1"
+    posId="$2"
+    mark="$3"
+    player=$4
+
+     INVOKARGS="{\"Args\":[\"move\",\"$posId\",\"$mark\"]}"
+    echo "================== Invoking move: $INVOKARGS, $player, $CHANNEL_NAME ==============="
+
+     chaincodeInvoke 0 $player
 }
 
 upgradeCC(){

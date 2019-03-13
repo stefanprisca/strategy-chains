@@ -55,12 +55,12 @@ updateAnchorPeers() {
 
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer channel update -o orderer.tictactoe.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CORE_PEER_LOCALMSPID}anchors.tx >&log.txt
+    peer channel update -o orderer.tictactoe.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Player${PLAYER}anchors.tx >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer channel update -o orderer.tictactoe.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CORE_PEER_LOCALMSPID}anchors.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA >&log.txt
+    peer channel update -o orderer.tictactoe.com:7050 -c $CHANNEL_NAME -f ./channel-artifacts/Player${PLAYER}anchors.tx --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA >&log.txt
     res=$?
     set +x
   fi
@@ -140,7 +140,7 @@ upgradeChaincode() {
   setGlobals $PEER $PLAYER
 
   set -x
-  peer chaincode upgrade -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CCNAME -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "AND ('Player1MSP.peer','Player2MSP.peer','Org3MSP.peer')"
+  peer chaincode upgrade -o orderer.tictactoe.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CCNAME -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "AND ('Player1.peer','Player2.peer')"
   res=$?
   set +x
   cat log.txt

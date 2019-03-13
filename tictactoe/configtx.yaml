@@ -1,10 +1,10 @@
 
 ---
 Organizations:
-    - &OrdererOrg
+    - &Orderer
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: OrdererOrg
+        Name: Orderer
 
         # ID to load the MSP definition as
         ID: OrdererMSP
@@ -30,7 +30,7 @@ Organizations:
     - &Player1
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Player1MSP
+        Name: Player1
 
         # ID to load the MSP definition as
         ID: Player1MSP
@@ -62,7 +62,7 @@ Organizations:
     - &Player2
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Player2MSP
+        Name: Player2
 
         # ID to load the MSP definition as
         ID: Player2MSP
@@ -179,7 +179,7 @@ Profiles:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
-                - *OrdererOrg
+                - *Orderer
             Capabilities:
                 <<: *OrdererCapabilities
         Consortiums:
@@ -209,13 +209,13 @@ Profiles:
                 - kafka.tictactoe.com:9092
 
             Organizations:
-            - *OrdererOrg
+            - *Orderer
             Capabilities:
                 <<: *OrdererCapabilities
         Application:
             <<: *ApplicationDefaults
             Organizations:
-            - <<: *OrdererOrg
+            - <<: *Orderer
         Consortiums:
             TTTConsortium:
                 Organizations:
