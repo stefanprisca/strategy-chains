@@ -1,0 +1,185 @@
+# Copyright Stefan Prisca. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+volumes:
+  orderer.tfc.com:
+  peer0.player1.tfc.com:
+  peer0.player2.tfc.com:
+  peer0.player3.tfc.com:
+  peer0.player4.tfc.com:
+  peer0.player5.tfc.com:
+
+networks:
+  tfcn:
+services:
+  ca0:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-player1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.player1.tfc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.player1.tfc.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/player1.tfc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_player1
+    networks:
+      - tfcn
+
+  ca1:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-player2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.player2.tfc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.player2.tfc.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/player2.tfc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_player2
+    networks:
+      - tfcn
+
+  ca2:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-player3
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.player3.tfc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA3_PRIVATE_KEY
+    ports:
+      - "9054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.player3.tfc.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA3_PRIVATE_KEY -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/player3.tfc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_player3
+    networks:
+      - tfcn
+  
+  ca3:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-player4
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.player4.tfc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA4_PRIVATE_KEY
+    ports:
+      - "10054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.player4.tfc.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA4_PRIVATE_KEY -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/player4.tfc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_player4
+    networks:
+      - tfcn
+
+  ca4:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-player5
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.player5.tfc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA5_PRIVATE_KEY
+    ports:
+      - "11054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.player5.tfc.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA5_PRIVATE_KEY -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/player5.tfc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_player5
+    networks:
+      - tfcn
+
+  orderer.tfc.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.tfc.com
+    container_name: orderer.tfc.com
+    networks:
+      - tfcn
+
+  peer0.player1.tfc.com:
+    container_name: peer0.player1.tfc.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.player1.tfc.com
+    networks:
+      - tfcn
+
+  peer0.player2.tfc.com:
+    container_name: peer0.player2.tfc.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.player2.tfc.com
+    networks:
+      - tfcn
+
+  peer0.player3.tfc.com:
+    container_name: peer0.player3.tfc.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.player3.tfc.com
+    networks:
+      - tfcn
+
+  peer0.player4.tfc.com:
+    container_name: peer0.player4.tfc.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.player4.tfc.com
+    networks:
+      - tfcn
+
+  peer0.player5.tfc.com:
+    container_name: peer0.player5.tfc.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.player5.tfc.com
+    networks:
+      - tfcn
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:$IMAGE_TAG
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.player1.tfc.com:7051
+      - CORE_PEER_LOCALMSPID=Player1MSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player1.tfc.com/peers/peer0.player1.tfc.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player1.tfc.com/peers/peer0.player1.tfc.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player1.tfc.com/peers/peer0.player1.tfc.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player1.tfc.com/users/Admin@player1.tfc.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ${FABRIC_CFG_PATH}/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ${FABRIC_CFG_PATH}/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - orderer.tfc.com
+      - peer0.player1.tfc.com
+      - peer0.player2.tfc.com
+      - peer0.player3.tfc.com
+      - peer0.player4.tfc.com
+      - peer0.player5.tfc.com
+    networks:
+      - tfcn

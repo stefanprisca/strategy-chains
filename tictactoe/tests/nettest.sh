@@ -19,4 +19,4 @@ docker exec -i cli /bin/bash -c "scripts/ccman.sh instantiate $ccname $channelna
 docker exec -i cli /bin/bash -c "scripts/ccman.sh invoke $ccname $channelname 11 X 1"
 
 # bring down the network
-yes | ./ttt.sh -m down -c tttchannel
+# yes | ./ttt.sh -m down -c tttchannel

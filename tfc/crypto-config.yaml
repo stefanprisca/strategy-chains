@@ -1,0 +1,57 @@
+# ---------------------------------------------------------------------------
+# "OrdererOrgs" - Definition of organizations managing orderer nodes
+# ---------------------------------------------------------------------------
+OrdererOrgs:
+  # ---------------------------------------------------------------------------
+  # Orderer
+  # ---------------------------------------------------------------------------
+  - Name: Orderer
+    Domain: tfc.com
+    # ---------------------------------------------------------------------------
+    # "Specs" - See PeerOrgs below for complete description
+    # ---------------------------------------------------------------------------
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  # ---------------------------------------------------------------------------
+  # Player1
+  # ---------------------------------------------------------------------------
+  - Name: Player1
+    Domain: player1.tfc.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+  # ---------------------------------------------------------------------------
+  # Player2: See "Player1" for full specification
+  # ---------------------------------------------------------------------------
+  - Name: Player2
+    Domain: player2.tfc.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+  - Name: Player3
+    Domain: player3.tfc.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+  - Name: Player4
+    Domain: player4.tfc.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+  - Name: Player5
+    Domain: player5.tfc.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
