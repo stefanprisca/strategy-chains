@@ -134,13 +134,6 @@ function networkUp() {
     generateChannelArtifacts
   fi
 
-  #get the ca key names
-  export PLAYER1_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tfc.com/ca/ | grep _sk)
-  export PLAYER2_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tfc.com/ca/ | grep _sk)
-  export PLAYER2_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tfc.com/ca/ | grep _sk)
-  export PLAYER2_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tfc.com/ca/ | grep _sk)
-  export PLAYER2_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tfc.com/ca/ | grep _sk)
-
   IMAGE_TAG=$IMAGETAG docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_KAFKA up -d 2>&1
   if [ $? -ne 0 ]; then
     echo "ERROR !!!! Unable to start network"
@@ -177,7 +170,8 @@ function networkDown() {
     #Cleanup images
     removeUnwantedImages
     # remove orderer block and other channel configuration transactions and certs
-    rm -rf ${FABRIC_CFG_PATH}/channel-artifacts/*.block ${FABRIC_CFG_PATH}/channel-artifacts/*.tx ${FABRIC_CFG_PATH}/crypto-config
+    rm -rf ${FABRIC_CFG_PATH}/channel-artifacts/*.block ${FABRIC_CFG_PATH}/channel-artifacts/*.tx ${FABRIC_CFG_PATH}/crypto-config \
+      ${FABRIC_CFG_PATH}/temp
   fi
 }
 

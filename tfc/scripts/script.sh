@@ -78,6 +78,20 @@ updateAnchorPeers 0 1
 echo "Updating anchor peers for player2..."
 updateAnchorPeers 0 2
 
+
+## Install and initiate a chaincode to see if it works.
+. scripts/ccman.sh
+ccgit="github.com/stefanprisca/strategy-code"
+ccname="tictactoe"
+
+# install and init tictactoe chaincode
+installCC $ccgit $ccname
+instantiateCC $CHANNEL_NAME $ccname
+
+# # invoke chaincode
+# # Don't know how to invoke with protobuf arguments.
+# docker exec -i cli /bin/bash -c "scripts/ccman.sh invoke $ccname $channelname 11 X 1"
+
 echo
 echo "========= All GOOD, tfc execution completed =========== "
 echo
