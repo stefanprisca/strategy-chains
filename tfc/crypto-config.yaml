@@ -12,6 +12,9 @@ OrdererOrgs:
     # ---------------------------------------------------------------------------
     Specs:
       - Hostname: orderer
+        SANS:
+          - "localhost"
+          - "127.0.0.1"
 
 PeerOrgs:
   # ---------------------------------------------------------------------------
@@ -34,6 +37,7 @@ PeerOrgs:
       Count: 1
     Users:
       Count: 1
+
   - Name: Player3
     Domain: player3.tfc.com
     EnableNodeOUs: true
@@ -41,6 +45,7 @@ PeerOrgs:
       Count: 1
     Users:
       Count: 1
+
   - Name: Player4
     Domain: player4.tfc.com
     EnableNodeOUs: true
@@ -48,6 +53,7 @@ PeerOrgs:
       Count: 1
     Users:
       Count: 1
+
   - Name: Player5
     Domain: player5.tfc.com
     EnableNodeOUs: true

@@ -79,7 +79,7 @@ services:
       - CORE_PEER_ADDRESS=peer0.player3.tfc.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.player3.tfc.com:7051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.player3.tfc.com:7051
-      - CORE_PEER_LOCALMSPID=Player2MSP
+      - CORE_PEER_LOCALMSPID=Player3MSP
     volumes:
         - /var/run/:/host/var/run/
         - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player3.tfc.com/peers/peer0.player3.tfc.com/msp:/etc/hyperledger/fabric/msp
@@ -99,7 +99,7 @@ services:
       - CORE_PEER_ADDRESS=peer0.player4.tfc.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.player4.tfc.com:7051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.player4.tfc.com:7051
-      - CORE_PEER_LOCALMSPID=Player2MSP
+      - CORE_PEER_LOCALMSPID=Player4MSP
     volumes:
         - /var/run/:/host/var/run/
         - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player4.tfc.com/peers/peer0.player4.tfc.com/msp:/etc/hyperledger/fabric/msp
@@ -119,7 +119,7 @@ services:
       - CORE_PEER_ADDRESS=peer0.player5.tfc.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.player5.tfc.com:7051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.player5.tfc.com:7051
-      - CORE_PEER_LOCALMSPID=Player2MSP
+      - CORE_PEER_LOCALMSPID=Player5MSP
     volumes:
         - /var/run/:/host/var/run/
         - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player5.tfc.com/peers/peer0.player5.tfc.com/msp:/etc/hyperledger/fabric/msp
