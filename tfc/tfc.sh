@@ -134,6 +134,11 @@ function networkUp() {
     generateChannelArtifacts
   fi
 
+  export PLAYER1_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tfc.com/ca/ | grep _sk)
+  export PLAYER2_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player2.tfc.com/ca/ | grep _sk)
+  export PLAYER3_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player3.tfc.com/ca/ | grep _sk)
+  export PLAYER4_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player4.tfc.com/ca/ | grep _sk)
+  export PLAYER5_CK=$(ls ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player5.tfc.com/ca/ | grep _sk)
   IMAGE_TAG=$IMAGETAG docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_KAFKA up -d 2>&1
   if [ $? -ne 0 ]; then
     echo "ERROR !!!! Unable to start network"
@@ -284,10 +289,10 @@ function generateChannelArtifacts() {
   fi
   echo
   echo "#################################################################"
-  echo "### Generating channel configuration transaction 'channel.tx' ###"
+  echo "### Generating channel configuration transaction '$CHANNEL_NAME.tx' ###"
   echo "#################################################################"
   set -x
-  configtxgen -profile TFCChannel -outputCreateChannelTx ${FABRIC_CFG_PATH}/channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+  configtxgen -profile TFCChannel -outputCreateChannelTx ${FABRIC_CFG_PATH}/channel-artifacts/$CHANNEL_NAME.tx -channelID $CHANNEL_NAME
   res=$?
   set +x
   if [ $res -ne 0 ]; then
