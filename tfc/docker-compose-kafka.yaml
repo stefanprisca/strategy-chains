@@ -19,7 +19,7 @@ services:
     networks:
     - tfcn
 
-  kafka.example.com:
+  kafka.tfc.com:
     container_name: kafka.tfc.com
     image: hyperledger/fabric-kafka:$IMAGE_TAG
     depends_on:
