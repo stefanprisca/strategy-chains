@@ -49,6 +49,26 @@ services:
       - 7051:7051
       - 7053:7053
 
+  peer1.player1.tfc.com:
+    container_name: peer1.player1.tfc.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.player1.tfc.com
+      - CORE_PEER_ADDRESS=peer1.player1.tfc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.player1.tfc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.player1.tfc.com:7051
+      - CORE_PEER_LOCALMSPID=Player1MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tfc.com/peers/peer1.player1.tfc.com/msp:/etc/hyperledger/fabric/msp
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player1.tfc.com/peers/peer1.player1.tfc.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.player1.tfc.com:/var/hyperledger/production
+    ports:
+      - 7151:7051
+      - 7113:7053
+  
   peer0.player2.tfc.com:
     container_name: peer0.player2.tfc.com
     extends:
@@ -68,6 +88,26 @@ services:
     ports:
       - 8051:7051
       - 8053:7053
+
+  peer1.player2.tfc.com:
+    container_name: peer1.player2.tfc.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.player2.tfc.com
+      - CORE_PEER_ADDRESS=peer1.player2.tfc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.player2.tfc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.player2.tfc.com:7051
+      - CORE_PEER_LOCALMSPID=Player2MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player2.tfc.com/peers/peer1.player2.tfc.com/msp:/etc/hyperledger/fabric/msp
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player2.tfc.com/peers/peer1.player2.tfc.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.player2.tfc.com:/var/hyperledger/production
+    ports:
+      - 8151:7051
+      - 8153:7053
 
   peer0.player3.tfc.com:
     container_name: peer0.player3.tfc.com
@@ -89,6 +129,26 @@ services:
       - 9051:7051
       - 9053:7053
 
+  peer1.player3.tfc.com:
+    container_name: peer1.player3.tfc.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.player3.tfc.com
+      - CORE_PEER_ADDRESS=peer1.player3.tfc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.player3.tfc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.player3.tfc.com:7051
+      - CORE_PEER_LOCALMSPID=Player3MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player3.tfc.com/peers/peer1.player3.tfc.com/msp:/etc/hyperledger/fabric/msp
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player3.tfc.com/peers/peer1.player3.tfc.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.player3.tfc.com:/var/hyperledger/production
+    ports:
+      - 9151:7051
+      - 9153:7053
+
   peer0.player4.tfc.com:
     container_name: peer0.player4.tfc.com
     extends:
@@ -109,6 +169,26 @@ services:
       - 10051:7051
       - 10053:7053
 
+  peer1.player4.tfc.com:
+    container_name: peer1.player4.tfc.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.player4.tfc.com
+      - CORE_PEER_ADDRESS=peer1.player4.tfc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.player4.tfc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.player4.tfc.com:7051
+      - CORE_PEER_LOCALMSPID=Player4MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player4.tfc.com/peers/peer1.player4.tfc.com/msp:/etc/hyperledger/fabric/msp
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player4.tfc.com/peers/peer1.player4.tfc.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.player4.tfc.com:/var/hyperledger/production
+    ports:
+      - 10151:7051
+      - 10153:7053
+
   peer0.player5.tfc.com:
     container_name: peer0.player5.tfc.com
     extends:
@@ -128,3 +208,23 @@ services:
     ports:
       - 11051:7051
       - 11053:7053
+    
+  peer1.player5.tfc.com:
+    container_name: peer1.player5.tfc.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.player5.tfc.com
+      - CORE_PEER_ADDRESS=peer1.player5.tfc.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.player5.tfc.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.player5.tfc.com:7051
+      - CORE_PEER_LOCALMSPID=Player5MSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player5.tfc.com/peers/peer1.player5.tfc.com/msp:/etc/hyperledger/fabric/msp
+        - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player5.tfc.com/peers/peer1.player5.tfc.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.player5.tfc.com:/var/hyperledger/production
+    ports:
+      - 11151:7051
+      - 11153:7053
