@@ -108,11 +108,45 @@ services:
     networks:
       - tfcn
 
+  ca.player4.tfc.com:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-player4
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.player4.tfc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/${PLAYER4_CK}
+    ports:
+      - "10054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.player4.tfc.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${PLAYER4_CK} -b admin:adminpw -d'
+    volumes:
+      - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player4.tfc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.player4.tfc.com
+    networks:
+      - tfcn
+
   peer0.player5.tfc.com:
     container_name: peer0.player5.tfc.com
     extends:
       file:  base/docker-compose-base.yaml
       service: peer0.player5.tfc.com
+    networks:
+      - tfcn
+
+  ca.player5.tfc.com:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-player5
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.player5.tfc.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/${PLAYER5_CK}
+    ports:
+      - "11054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.player5.tfc.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${PLAYER5_CK} -b admin:adminpw -d'
+    volumes:
+      - ${FABRIC_CFG_PATH}/crypto-config/peerOrganizations/player5.tfc.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.player5.tfc.com
     networks:
       - tfcn
 

@@ -24,7 +24,7 @@ PeerOrgs:
     Domain: player1.tfc.com
     EnableNodeOUs: true
     Template:
-      Count: 2
+      Count: 1
     Users:
       Count: 1
   # ---------------------------------------------------------------------------
@@ -34,7 +34,7 @@ PeerOrgs:
     Domain: player2.tfc.com
     EnableNodeOUs: true
     Template:
-      Count: 2
+      Count: 1
     Users:
       Count: 1
 
@@ -42,7 +42,7 @@ PeerOrgs:
     Domain: player3.tfc.com
     EnableNodeOUs: true
     Template:
-      Count: 2
+      Count: 1
     Users:
       Count: 1
 
@@ -50,7 +50,7 @@ PeerOrgs:
     Domain: player4.tfc.com
     EnableNodeOUs: true
     Template:
-      Count: 2
+      Count: 1
     Users:
       Count: 1
 
@@ -58,6 +58,6 @@ PeerOrgs:
     Domain: player5.tfc.com
     EnableNodeOUs: true
     Template:
-      Count: 2
+      Count: 1
     Users:
       Count: 1
