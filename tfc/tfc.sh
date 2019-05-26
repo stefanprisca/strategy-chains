@@ -159,6 +159,18 @@ function testE2E() {
   fi
 }
 
+
+function installCC() {
+  #IMAGE_TAG=$IMAGETAG docker-compose -f $COMPOSE_FILE_CLI up -d 2>&1
+
+  docker exec cli scripts/installCC.sh
+  if [ $? -ne 0 ]; then
+    echo "ERROR !!!! Installing CC failed!"
+    exit 1
+  fi
+}
+
+
 # Tear down running network
 function networkDown() {
   # stop org3 containers also in addition to player1 and player2, in case we were running sample to add org3
@@ -411,6 +423,8 @@ elif [ "$MODE" == "down" ]; then
   EXPMODE="Stopping"
 elif [ "$MODE" == "test" ]; then
   EXPMODE="Testing"
+elif [ "${MODE}" == "upCC" ]; then ## Clear the network
+  EXPMODE="Up and install CC"
 elif [ "$MODE" == "restart" ]; then
   EXPMODE="Restarting"
 elif [ "$MODE" == "generate" ]; then
@@ -465,6 +479,9 @@ elif [ "${MODE}" == "test" ]; then ## Clear the network
   networkUp 
   testE2E 
   networkDown
+elif [ "${MODE}" == "upCC" ]; then ## Clear the network
+  networkUp 
+  installCC
 elif [ "${MODE}" == "generate" ]; then ## Generate Artifacts
   copyConfigFiles
   generateCerts

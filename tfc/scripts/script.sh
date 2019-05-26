@@ -81,8 +81,8 @@ updateAnchorPeers 0 2
 
 ## Install and initiate a chaincode to see if it works.
 . scripts/ccman.sh
-ccgit="github.com/stefanprisca/strategy-code"
-ccname="tictactoe"
+ccgit="github.com/stefanprisca/strategy-code/tictactoe"
+ccname="ttt"
 
 # install and init tictactoe chaincode
 installCC $ccgit $ccname
