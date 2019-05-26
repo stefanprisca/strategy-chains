@@ -8,6 +8,9 @@
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/tfc.com/orderers/orderer.tfc.com/msp/tlscacerts/tlsca.tfc.com-cert.pem
 PEER0_PLAYER1_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player1.tfc.com/peers/peer0.player1.tfc.com/tls/ca.crt
 PEER0_PLAYER2_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player2.tfc.com/peers/peer0.player2.tfc.com/tls/ca.crt
+PEER0_PLAYER3_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player3.tfc.com/peers/peer0.player3.tfc.com/tls/ca.crt
+PEER0_PLAYER4_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player4.tfc.com/peers/peer0.player4.tfc.com/tls/ca.crt
+PEER0_PLAYER5_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player5.tfc.com/peers/peer0.player5.tfc.com/tls/ca.crt
 
 # verify the result of the end-to-end test
 verifyResult() {
@@ -39,6 +42,21 @@ setGlobals() {
     CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_PLAYER2_CA
     CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player2.tfc.com/users/Admin@player2.tfc.com/msp
     CORE_PEER_ADDRESS=peer0.player2.tfc.com:7051
+  elif [ $PLAYER -eq 3 ]; then
+    CORE_PEER_LOCALMSPID="Player3MSP"
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_PLAYER3_CA
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player3.tfc.com/users/Admin@player3.tfc.com/msp
+    CORE_PEER_ADDRESS=peer0.player3.tfc.com:7051
+  elif [ $PLAYER -eq 4 ]; then
+    CORE_PEER_LOCALMSPID="Player4MSP"
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_PLAYER4_CA
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player4.tfc.com/users/Admin@player4.tfc.com/msp
+    CORE_PEER_ADDRESS=peer0.player4.tfc.com:7051
+  elif [ $PLAYER -eq 5 ]; then
+    CORE_PEER_LOCALMSPID="Player5MSP"
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_PLAYER5_CA
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/player5.tfc.com/users/Admin@player5.tfc.com/msp
+    CORE_PEER_ADDRESS=peer0.player5.tfc.com:7051
   else
     echo "================== ERROR !!! PLAYER Unknown =================="
   fi
