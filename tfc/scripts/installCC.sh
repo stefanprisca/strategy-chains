@@ -45,14 +45,14 @@ installCC $ccgit $ccname
 ##
 ##		INSTALL ALLIANCES
 ##
-ccgit="github.com/stefanprisca/strategy-code/cmd/alliance"
-ccname="alliance"
+#ccgit="github.com/stefanprisca/strategy-code/cmd/alliance"
+#ccname="alliance"
 
-echo
-echo "========= Starting to install game chaincodes ${ccname} from ${ccgit} =========== "
-echo
+#echo
+#echo "========= Starting to install game chaincodes ${ccname} from ${ccgit} =========== "
+#echo
 
-installCC $ccgit $ccname
+#installCC $ccgit $ccname
 
 
 #instantiateCC $CHANNEL_NAME $ccname
