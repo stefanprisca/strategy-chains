@@ -30,6 +30,9 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('Player1MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Player1MSP.peer')"
         AnchorPeers:
             - Host: peer0.player1.tfc.com
               Port: 7051
@@ -49,6 +52,9 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('Player2MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Player2MSP.peer')"
         AnchorPeers:
             - Host: peer0.player2.tfc.com
               Port: 7051
@@ -68,6 +74,9 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('Player3MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Player3MSP.peer')"
         AnchorPeers:
             - Host: peer0.player3.tfc.com
               Port: 7051
@@ -87,6 +96,9 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('Player4MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Player4MSP.peer')"
         AnchorPeers:
             - Host: peer0.player4.tfc.com
               Port: 7051
@@ -106,6 +118,9 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('Player5MSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('Player5MSP.peer')"
         AnchorPeers:
             - Host: peer0.player5.tfc.com
               Port: 7051
@@ -114,15 +129,13 @@ Organizations:
 Capabilities:
 
   Channel: &ChannelCapabilities
-        V1_3: true
+        V2_0: true
 
   Orderer: &OrdererCapabilities
-        V1_1: true
+        V2_0: true
 
   Application: &ApplicationCapabilities
-        V1_3: true
-        V1_2: false
-        V1_1: false
+        V2_0: true
 
 Application: &ApplicationDefaults
 
@@ -138,6 +151,12 @@ Application: &ApplicationDefaults
         Admins:
             Type: ImplicitMeta
             Rule: "MAJORITY Admins"
+        LifecycleEndorsement:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Endorsement"
+        Endorsement:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Endorsement"
 
     Capabilities:
         <<: *ApplicationCapabilities
@@ -240,6 +259,7 @@ Profiles:
                 - *Player5
     TFCChannel:
         Consortium: TFCConsortium
+        <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
